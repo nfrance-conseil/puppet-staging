@@ -52,6 +52,22 @@ describe 'staging::extract', type: :define do
                                                               creates: '/opt/sample')
     end
   end
+  
+  describe 'when deploying xz' do
+    let(:title) { 'sample.txz' }
+    let(:params) { { target: '/opt' } }
+
+    it { is_expected.to compile.with_all_deps }
+    it do
+      is_expected.to contain_file('/opt/staging')
+      is_expected.to contain_exec('extract sample.txz').with(command: 'tar xJf /opt/staging/sample.txz',
+                                                              path: '/usr/local/bin:/usr/bin:/bin',
+                                                              cwd: '/opt',
+                                                              creates: '/opt/sample')
+    end
+  end
+
+
 
   describe 'when deploying zip' do
     let(:title) { 'sample.zip' }
